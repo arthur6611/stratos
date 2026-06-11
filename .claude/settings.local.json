@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /Users/arthur/Documents/stratos/.claude)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -sL \"https://a.espncdn.com/i/leaguelogos/soccer/500/9.png\" -o /Users/arthur/Documents/stratos/logos/ligue1.png)",
+      "Bash(curl -sL \"https://a.espncdn.com/i/leaguelogos/soccer/500/2.png\" -o /Users/arthur/Documents/stratos/logos/ucl.png)",
+      "Bash(curl -sL \"https://a.espncdn.com/i/leaguelogos/nba/500/1.png\" -o /Users/arthur/Documents/stratos/logos/nba.png)",
+      "Bash(curl -sL \"https://a.espncdn.com/i/leaguelogos/soccer/500/23.png\" -o /Users/arthur/Documents/stratos/logos/pl.png)",
+      "Bash(curl -sL \"https://a.espncdn.com/i/leaguelogos/tennis/500/1.png\" -o /Users/arthur/Documents/stratos/logos/rg.png)",
+      "Bash(curl -sL \"https://cdn.nba.com/logos/leagues/logo-nba.svg\" -o /Users/arthur/Documents/stratos/logos/nba.svg)",
+      "Bash(curl -sL -A \"Mozilla/5.0\" \"https://upload.wikimedia.org/wikipedia/fr/thumb/4/44/Roland-Garros-logo-2021.png/180px-Roland-Garros-logo-2021.png\" -o /Users/arthur/Documents/stratos/logos/rg.png)",
+      "Bash(curl -sL \"https://www.thesportsdb.com/images/media/league/badge/roland-garros-1516369838.png\" -o /Users/arthur/Documents/stratos/logos/rg.png)",
+      "Bash(curl -sL -A \"Mozilla/5.0\" \"https://a.espncdn.com/combiner/i?img=/i/leaguelogos/nba/500/1.png\" -o /Users/arthur/Documents/stratos/logos/nba.png)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36' https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Roland_Garros_logo_2020.svg/200px-Roland_Garros_logo_2020.svg.png -o /Users/arthur/Documents/stratos/logos/rg.png)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36' https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Roland_Garros_logo_2020.svg/200px-Roland_Garros_logo_2020.svg.png -o /Users/arthur/Documents/stratos/logos/rg.png)",
+      "WebFetch(domain:commons.wikimedia.org)",
+      "WebFetch(domain:en.wikipedia.org)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36' https://upload.wikimedia.org/wikipedia/en/thumb/1/1d/Logo_Roland-Garros.svg/250px-Logo_Roland-Garros.svg.png -o /Users/arthur/Documents/stratos/logos/rg.png)",
+      "WebFetch(domain:www.rolandgarros.com)",
+      "Bash(curl -sL https://images.prismic.io/fft-rg-site%2F95765448-c7fa-428b-b565-8368dba90b17_logo.svg?auto=compress,format -o /Users/arthur/Documents/stratos/logos/rg.svg)",
+      "Bash(curl -sL \"https://a.espncdn.com/i/leaguelogos/soccer/500/2310.png\" -o europa.png)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36' --referer https://en.wikipedia.org/ https://upload.wikimedia.org/wikipedia/en/thumb/b/b2/Wimbledon_Championships_logo_-_2022.png/180px-Wimbledon_Championships_logo_-_2022.png -o wimbledon.png)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36' --referer https://en.wikipedia.org/ https://upload.wikimedia.org/wikipedia/en/thumb/b/b6/US-Open-Tennis-Logo.svg/180px-US-Open-Tennis-Logo.svg.png -o usopen.png)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36' --referer https://en.wikipedia.org/ https://upload.wikimedia.org/wikipedia/en/thumb/1/1d/Australian_Open_logo.svg/180px-Australian_Open_logo.svg.png -o ausopen.png)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36' https://upload.wikimedia.org/wikipedia/en/thumb/b/b2/Wimbledon_Championships_logo_-_2022.png/180px-Wimbledon_Championships_logo_-_2022.png -o wimbledon.png)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36' https://upload.wikimedia.org/wikipedia/en/thumb/b/b6/US-Open-Tennis-Logo.svg/180px-US-Open-Tennis-Logo.svg.png -o usopen.png)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36' https://upload.wikimedia.org/wikipedia/fr/thumb/8/8e/Logo_Top_14.png/180px-Logo_Top_14.png -o top14.png)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36' https://upload.wikimedia.org/wikipedia/fr/thumb/e/e4/6_nations_logo_2020.png/180px-6_nations_logo_2020.png -o sixnations.png)",
+      "WebFetch(domain:fr.wikipedia.org)",
+      "Bash(curl -sL \"https://www.euroleaguebasketball.net/img/euroleague/logo.svg\" -o euroleague.svg)",
+      "WebFetch(domain:www.euroleaguebasketball.net)",
+      "Bash(grep -n \"currentUser\\\\.\\\\|users/\\\\`\\\\|users/\\\\${\" /Users/arthur/Documents/stratos/app.js)",
+      "Bash(grep -n \"users/\\\\`\\\\${currentUser\\\\.pseudo}\\\\`\\\\|users/\\\\${currentUser\\\\.pseudo}\" /Users/arthur/Documents/stratos/app.js)"
+    ]
+  }
+}

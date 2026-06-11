@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stratos Admin — Résultats</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">STRATOS<span>ADMIN</span></div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-view="matches">⚽ Résultats matchs</button>
+      <button class="nav-item" data-view="users">👤 Utilisateurs</button>
+    </nav>
+    <div class="sidebar-status" id="firebase-status">⏳ Connexion…</div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ── VUE RÉSULTATS ── -->
+    <div class="view active" id="view-matches">
+      <header class="topbar">
+        <h1>Résultats des matchs</h1>
+        <div class="topbar-actions">
+          <select id="filter-sport">
+            <option value="">Tous les sports</option>
+            <option value="football">⚽ Football</option>
+            <option value="tennis">🎾 Tennis</option>
+          </select>
+          <select id="filter-group">
+            <option value="">Tous les groupes</option>
+            <option>A</option><option>B</option><option>C</option><option>D</option>
+            <option>E</option><option>F</option><option>G</option><option>H</option>
+            <option>I</option><option>J</option><option>K</option><option>L</option>
+            <option value="W-1T">Wimbledon 1T</option>
+            <option value="W-QF">Wimbledon QF</option>
+            <option value="W-SF">Wimbledon SF</option>
+            <option value="W-FIN">Wimbledon Finale</option>
+          </select>
+          <select id="filter-status">
+            <option value="">Tous les matchs</option>
+            <option value="pending">Sans résultat</option>
+            <option value="done">Avec résultat</option>
+          </select>
+        </div>
+      </header>
+
+      <div class="table-wrap">
+        <table id="matches-table">
+          <thead>
+            <tr>
+              <th>Date / Heure</th>
+              <th>Groupe</th>
+              <th>Match</th>
+              <th>Résultat</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="matches-tbody">
+            <tr><td colspan="5" class="loading">Chargement…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── VUE UTILISATEURS ── -->
+    <div class="view" id="view-users">
+      <header class="topbar">
+        <h1>Utilisateurs</h1>
+        <input class="search-input" id="user-search" type="search" placeholder="Rechercher par pseudo…" />
+      </header>
+      <div class="table-wrap">
+        <table id="users-table">
+          <thead>
+            <tr>
+              <th>Pseudo</th>
+              <th>Email</th>
+              <th>Pronostics</th>
+              <th>Points</th>
+              <th>Bons pronostics</th>
+              <th>Inscrit le</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody">
+            <tr><td colspan="6" class="loading">Chargement…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── MODAL RÉSULTAT ── -->
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal">
+      <h2 class="modal-title">Saisir le score</h2>
+      <p class="modal-match" id="modal-match"></p>
+
+      <div class="score-row">
+        <div class="score-team">
+          <span class="score-team-name" id="score-t1-name">Équipe 1</span>
+          <div class="score-controls">
+            <button class="score-btn" data-side="t1" data-op="-">−</button>
+            <span class="score-val" id="score-t1">0</span>
+            <button class="score-btn" data-side="t1" data-op="+">+</button>
+          </div>
+        </div>
+        <div class="score-sep">–</div>
+        <div class="score-team">
+          <span class="score-team-name" id="score-t2-name">Équipe 2</span>
+          <div class="score-controls">
+            <button class="score-btn" data-side="t2" data-op="-">−</button>
+            <span class="score-val" id="score-t2">0</span>
+            <button class="score-btn" data-side="t2" data-op="+">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="score-result-preview" id="score-result-preview">Résultat : –</div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" id="modal-cancel">Annuler</button>
+        <button class="btn-save" id="modal-save">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

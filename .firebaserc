@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "stratos-4d3a3"
+  },
+  "targets": {
+    "stratos-4d3a3": {
+      "hosting": {
+        "app": [
+          "stratos-4d3a3"
+        ],
+        "admin": [
+          "stratos-admin-4d3a3"
+        ]
+      }
+    }
+  }
+}

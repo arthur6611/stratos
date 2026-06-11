@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Stratos</title>
+  <link rel="stylesheet" href="styles.css?v=2" />
+</head>
+<body>
+  <div class="phone-frame">
+
+    <!-- ════════════════════════════════
+         LOGIN SCREEN
+    ════════════════════════════════ -->
+    <div class="screen" id="screen-login">
+      <header class="top-bar">
+        <span class="logo">STRATOS</span>
+      </header>
+      <main class="card">
+        <div class="login-logo-wrap">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="28" fill="#1a3de8" opacity=".12"/>
+            <polyline points="14 28 22 20 28 32 34 24 42 28" stroke="#1a3de8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <h1 class="card-title">Bienvenue sur Stratos</h1>
+
+        <!-- Onglets Connexion / Inscription -->
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tab-login">Connexion</button>
+          <button class="auth-tab" id="tab-register">Inscription</button>
+        </div>
+
+        <!-- Formulaire connexion -->
+        <form id="login-form" novalidate>
+          <div class="field">
+            <label for="login-email">E-mail</label>
+            <input type="email" id="login-email" placeholder="toi@exemple.com"
+              autocomplete="email" autocapitalize="none" autocorrect="off" />
+          </div>
+          <div class="field">
+            <label for="login-password">Mot de passe</label>
+            <input type="password" id="login-password" placeholder="••••••••"
+              autocomplete="current-password" />
+          </div>
+          <p id="login-error" class="field-error hidden"></p>
+          <button type="submit" class="btn-primary" id="login-btn">Se connecter</button>
+        </form>
+
+        <!-- Formulaire inscription -->
+        <form id="register-form" novalidate class="hidden">
+          <div class="field">
+            <label for="reg-email">E-mail</label>
+            <input type="email" id="reg-email" placeholder="toi@exemple.com"
+              autocomplete="email" autocapitalize="none" autocorrect="off" />
+          </div>
+          <div class="field">
+            <label for="reg-pseudo">Pseudo</label>
+            <input type="text" id="reg-pseudo" placeholder="ton_pseudo"
+              autocapitalize="none" autocorrect="off" spellcheck="false" maxlength="24" />
+          </div>
+          <div class="field">
+            <label for="reg-password">Mot de passe</label>
+            <input type="password" id="reg-password" placeholder="min. 6 caractères"
+              autocomplete="new-password" />
+          </div>
+          <p id="register-error" class="field-error hidden"></p>
+          <button type="submit" class="btn-primary" id="register-btn">Créer mon compte</button>
+        </form>
+
+      </main>
+    </div>
+
+    <!-- ════════════════════════════════
+         HOME / COMPETITIONS SCREEN
+    ════════════════════════════════ -->
+    <div class="screen hidden" id="screen-home">
+
+      <!-- Top nav -->
+      <header class="home-topbar">
+        <span class="logo">STRATOS</span>
+        <button class="icon-btn" aria-label="Profil">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Scrollable content -->
+      <div class="home-scroll">
+
+        <!-- Hero banner -->
+        <div class="hero-banner">
+          <h2 class="hero-title">Exploration Sportive</h2>
+          <p class="hero-sub">Découvrez les compétitions les plus chaudes du moment.</p>
+          <div class="search-bar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8899cc" stroke-width="2.5" stroke-linecap="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="search" placeholder="Rechercher une compétition..." />
+          </div>
+        </div>
+
+        <!-- Sport filter tabs -->
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">
+            <span class="tab-icon">⚡</span> Tout
+          </button>
+          <button class="filter-tab" data-filter="football">
+            <span class="tab-icon">⚽</span> Football
+          </button>
+          <button class="filter-tab" data-filter="tennis">
+            <span class="tab-icon">🎾</span> Tennis
+          </button>
+        </div>
+
+        <!-- Competition cards -->
+        <div class="competition-list">
+
+          <div class="comp-card" data-sport="football">
+            <div class="comp-logo" style="font-size:44px;line-height:1;display:flex;align-items:center;justify-content:center">🏆</div>
+            <h3 class="comp-name">Coupe du Monde FIFA 2026</h3>
+            <span class="comp-badge badge--blue">USA · Canada · Mexique</span>
+            <p class="comp-desc">48 nations, 12 groupes, 104 matchs. Le plus grand événement sportif de la planète — du 11 juin au 19 juillet 2026.</p>
+            <button class="btn-primary btn-comp">Voir les Matchs</button>
+          </div>
+
+          <div class="comp-card" data-sport="tennis">
+            <div class="comp-logo" style="font-size:44px;line-height:1;display:flex;align-items:center;justify-content:center">🎾</div>
+            <h3 class="comp-name">Wimbledon 2026</h3>
+            <span class="comp-badge badge--green">Grand Chelem · Gazon</span>
+            <p class="comp-desc">Le plus prestigieux des tournois de tennis. Simple messieurs & dames — du 29 juin au 13 juillet 2026.</p>
+            <button class="btn-primary btn-comp btn-comp--wimbledon">Voir les Matchs</button>
+          </div>
+
+        </div>
+
+
+      </div><!-- end home-scroll -->
+
+      <!-- Bottom nav -->
+      <nav class="bottom-nav">
+        <button class="nav-item" data-nav="matchs">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span>Matchs</span>
+        </button>
+        <button class="nav-item active" data-nav="competitions">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <span>Compétitions</span>
+        </button>
+        <button class="nav-item" data-nav="groupes">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>Groupes</span>
+        </button>
+        <button class="nav-item" data-nav="social">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>Social</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- ════════════════════════════════
+         COMPETITION DETAIL SCREEN
+    ════════════════════════════════ -->
+    <div class="screen hidden" id="screen-competition">
+
+      <!-- Top nav -->
+      <header class="home-topbar">
+        <button class="icon-btn" id="comp-back" aria-label="Retour">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+        <span class="logo">STRATOS</span>
+        <button class="icon-btn" aria-label="Profil">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Scrollable content -->
+      <div class="home-scroll">
+
+        <!-- Hero -->
+        <div class="comp-hero">
+          <div class="comp-hero-overlay">
+            <span class="comp-hero-league" id="comp-hero-league">COUPE DU MONDE FIFA 2026</span>
+            <h2 class="comp-hero-title" id="comp-screen-title">Phase de<br>Groupes</h2>
+            <button class="btn-create-group" id="btn-create-group">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+              CRÉER UN GROUPE
+            </button>
+          </div>
+        </div>
+
+        <!-- Classement -->
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+              </svg>
+              Classement
+            </div>
+            <div class="group-selector">
+              <select class="group-select" id="group-select">
+                <option value="A">Groupe A</option>
+                <option value="B">Groupe B</option>
+                <option value="C">Groupe C</option>
+                <option value="D">Groupe D</option>
+                <option value="E">Groupe E</option>
+                <option value="F">Groupe F</option>
+                <option value="G">Groupe G</option>
+                <option value="H">Groupe H</option>
+                <option value="I">Groupe I</option>
+                <option value="J">Groupe J</option>
+                <option value="K">Groupe K</option>
+                <option value="L">Groupe L</option>
+              </select>
+            </div>
+          </div>
+
+          <table class="standings-table">
+            <thead>
+              <tr>
+                <th class="col-club">Équipe</th>
+                <th title="Matchs joués">J</th>
+                <th title="Victoires">V</th>
+                <th title="Nuls">N</th>
+                <th title="Défaites">D</th>
+                <th class="col-pts">PTS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rempli dynamiquement par renderGroup() -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Matchs à venir -->
+        <div class="section-label">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Matchs à venir
+        </div>
+
+        <div id="comp-matches-list"></div>
+
+        <button class="btn-calendar">VOIR TOUT LE CALENDRIER</button>
+
+      </div><!-- end home-scroll -->
+
+      <!-- Bottom nav -->
+      <nav class="bottom-nav">
+        <button class="nav-item" data-nav="matchs">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span>Matchs</span>
+        </button>
+        <button class="nav-item active" data-nav="competitions">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <span>Compétitions</span>
+        </button>
+        <button class="nav-item" data-nav="groupes">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>Groupes</span>
+        </button>
+        <button class="nav-item" data-nav="social">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>Social</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- ════════════════════════════════
+         SOCIAL SCREEN
+    ════════════════════════════════ -->
+    <div class="screen hidden" id="screen-social">
+
+      <header class="home-topbar">
+        <span class="logo">STRATOS</span>
+        <button class="icon-btn" aria-label="Profil">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="home-scroll">
+        <div class="social-page">
+
+          <h2 class="social-title">Social</h2>
+
+          <!-- Recherche utilisateurs -->
+          <div class="social-search">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8899cc" stroke-width="2.5" stroke-linecap="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input id="friend-search-input" type="search" placeholder="Rechercher un pseudo…" autocapitalize="none" autocorrect="off" />
+          </div>
+
+          <!-- Résultats de recherche (masqués par défaut) -->
+          <div id="friend-search-results" class="hidden"></div>
+
+          <!-- Mes amis -->
+          <div class="friends-header" style="margin-top:20px">
+            <span class="friends-label">Mes amis</span>
+            <span class="online-badge" id="friends-count">0 ami</span>
+          </div>
+
+          <!-- Liste amis scrollable horizontalement -->
+          <div class="friends-scroll" id="friends-scroll-list">
+            <!-- rempli par renderSocialScreen() -->
+          </div>
+
+          <!-- Liste complète des amis -->
+          <div class="all-friends-list" id="all-friends-list">
+            <!-- rempli par renderSocialScreen() -->
+          </div>
+
+          <!-- Inviter par lien -->
+          <div class="invite-card">
+            <h3 class="invite-title">Inviter par lien</h3>
+            <p class="invite-sub">Partagez le lien via message ou réseau social</p>
+            <button class="btn-send-link" id="btn-share-link">
+              COPIER LE LIEN
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Bottom nav -->
+      <nav class="bottom-nav">
+        <button class="nav-item" data-nav="matchs">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span>Matchs</span>
+        </button>
+        <button class="nav-item" data-nav="competitions">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <span>Compétitions</span>
+        </button>
+        <button class="nav-item" data-nav="groupes">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>Groupes</span>
+        </button>
+        <button class="nav-item active" data-nav="social">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
+          </svg>
+          <span>Social</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- ════════════════════════════════
+         GROUPS LIST SCREEN
+    ════════════════════════════════ -->
+    <div class="screen hidden" id="screen-groups">
+
+      <header class="home-topbar">
+        <span class="logo">STRATOS</span>
+        <button class="icon-btn" aria-label="Profil">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="home-scroll">
+        <div class="social-page">
+          <h2 class="social-title">Mes Groupes</h2>
+
+          <!-- Mes groupes list -->
+          <div class="my-groups" id="my-groups-section">
+            <div id="my-groups-list">
+              <p class="no-groups-msg" id="no-groups-msg">Aucun groupe pour l'instant.</p>
+            </div>
+          </div>
+
+          <!-- Créer un groupe banner -->
+          <div class="create-group-banner" style="margin-top:32px">
+            <h3 class="create-group-title">Créer un Groupe</h3>
+            <p class="create-group-sub">Défiez vos amis sur les prochains matchs.</p>
+            <button class="btn-create-now">CRÉER MAINTENANT</button>
+          </div>
+
+        </div>
+      </div>
+
+      <nav class="bottom-nav">
+        <button class="nav-item" data-nav="matchs"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Matchs</span></button>
+        <button class="nav-item" data-nav="competitions"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Compétitions</span></button>
+        <button class="nav-item active" data-nav="groupes"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Groupes</span></button>
+        <button class="nav-item" data-nav="social"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Social</span></button>
+      </nav>
+    </div>
+
+    <!-- ════════════════════════════════
+         GROUP DETAIL SCREEN
+    ════════════════════════════════ -->
+    <div class="screen hidden" id="screen-group">
+
+      <header class="home-topbar">
+        <button class="icon-btn" id="group-back" aria-label="Retour">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+        <span class="logo" id="group-screen-title">Mon Groupe</span>
+        <button class="icon-btn" aria-label="Options">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="home-scroll">
+
+        <!-- Group hero -->
+        <div class="group-hero">
+          <div class="group-hero-icon">👥</div>
+          <h2 class="group-hero-name" id="group-hero-name">Mon Groupe</h2>
+          <p class="group-hero-comp" id="group-hero-comp">Ligue 1</p>
+          <div class="group-hero-stats">
+            <div class="group-stat"><span class="group-stat-val" id="group-stat-members">1</span><span class="group-stat-label">membres</span></div>
+            <div class="group-stat-sep"></div>
+            <div class="group-stat"><span class="group-stat-val">12</span><span class="group-stat-label">matchs joués</span></div>
+            <div class="group-stat-sep"></div>
+            <div class="group-stat"><span class="group-stat-val">🥇</span><span class="group-stat-label">ta position</span></div>
+          </div>
+        </div>
+
+        <!-- Classement du groupe -->
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              Classement
+            </div>
+          </div>
+          <table class="standings-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th class="col-club">Membre</th>
+                <th title="Bons pronostics / Total">✓/J</th>
+                <th>PTS</th>
+              </tr>
+            </thead>
+            <tbody id="group-standings-body">
+              <!-- Rempli dynamiquement -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Matchs à venir -->
+        <div class="section-label">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Prochains matchs
+        </div>
+
+        <!-- Rempli dynamiquement par openGroupDetail() -->
+        <div id="group-next-matches"></div>
+
+        <button class="btn-calendar">VOIR TOUT LE CALENDRIER</button>
+
+      </div>
+
+      <!-- Bottom nav -->
+      <nav class="bottom-nav">
+        <button class="nav-item" data-nav="matchs"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Matchs</span></button>
+        <button class="nav-item" data-nav="competitions"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Compétitions</span></button>
+        <button class="nav-item active" data-nav="social"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Groupes</span></button>
+        <button class="nav-item" data-nav="social2"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Social</span></button>
+      </nav>
+    </div>
+
+    <!-- ════════════════════════════════
+         MATCHS SCREEN
+    ════════════════════════════════ -->
+    <div class="screen hidden" id="screen-matchs">
+
+      <header class="home-topbar">
+        <span class="logo">STRATOS</span>
+        <button class="icon-btn" aria-label="Profil">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </button>
+      </header>
+
+      <div class="home-scroll" style="padding:0 0 90px">
+        <div class="matchs-sport-header">
+          <span class="matchs-sport-icon">🌍</span>
+          <span class="matchs-sport-name">Coupe du Monde FIFA 2026</span>
+        </div>
+        <!-- Rempli dynamiquement par renderMatchsScreen() -->
+        <div id="matchs-list"></div>
+      </div>
+
+      <nav class="bottom-nav">
+        <button class="nav-item active" data-nav="matchs"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Matchs</span></button>
+        <button class="nav-item" data-nav="competitions"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Compétitions</span></button>
+        <button class="nav-item" data-nav="groupes"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Groupes</span></button>
+        <button class="nav-item" data-nav="social"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Social</span></button>
+      </nav>
+    </div>
+
+    <!-- ════════════════════════════════
+         CALENDAR SCREEN (full match list)
+    ════════════════════════════════ -->
+  <div class="screen hidden" id="screen-calendar">
+
+    <header class="home-topbar">
+      <button class="icon-btn" id="calendar-back" aria-label="Retour">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      <span class="logo" id="calendar-title">Calendrier</span>
+      <div style="width:36px"></div>
+    </header>
+
+    <div class="home-scroll" style="padding:12px 16px 90px" id="calendar-scroll">
+
+      <!-- rendu dynamique -->
+
+    </div>
+
+    <nav class="bottom-nav">
+      <button class="nav-item" data-nav="matchs"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Matchs</span></button>
+      <button class="nav-item active" data-nav="competitions"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Compétitions</span></button>
+      <button class="nav-item" data-nav="groupes"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Groupes</span></button>
+      <button class="nav-item" data-nav="social"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Social</span></button>
+    </nav>
+  </div>
+
+    <!-- ════════════════════════════════
+         PROFILE SCREEN
+    ════════════════════════════════ -->
+    <div class="screen hidden" id="screen-profile">
+
+      <header class="home-topbar">
+        <button class="icon-btn" id="profile-back" aria-label="Retour">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="logo">Profil</span>
+        <div style="width:36px"></div>
+      </header>
+
+      <div class="home-scroll" style="padding-bottom:40px">
+
+        <div class="profile-hero">
+          <div class="profile-avatar" id="profile-avatar">AR</div>
+          <h2 class="profile-pseudo" id="profile-pseudo">arthur</h2>
+          <span class="profile-status-badge" id="profile-status-badge">● En ligne</span>
+        </div>
+
+        <div class="profile-stats-row">
+          <div class="profile-stat">
+            <span class="profile-stat-val" id="profile-stat-friends">0</span>
+            <span class="profile-stat-label">Amis</span>
+          </div>
+          <div class="profile-stat-sep"></div>
+          <div class="profile-stat">
+            <span class="profile-stat-val" id="profile-stat-groups">0</span>
+            <span class="profile-stat-label">Groupes</span>
+          </div>
+          <div class="profile-stat-sep"></div>
+          <div class="profile-stat">
+            <span class="profile-stat-val" id="profile-stat-pronos">0</span>
+            <span class="profile-stat-label">Pronos</span>
+          </div>
+        </div>
+
+        <div class="section-card" style="margin:0 16px 16px">
+          <div class="section-header">
+            <div class="section-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              Performances récentes
+            </div>
+          </div>
+          <div id="profile-perf-list"></div>
+        </div>
+
+        <div class="section-card" style="margin:0 16px 16px">
+          <div class="section-header">
+            <div class="section-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              Mon compte
+            </div>
+          </div>
+          <div class="profile-info-row">
+            <span class="profile-info-label">Pseudo</span>
+            <span class="profile-info-val" id="profile-info-pseudo">—</span>
+          </div>
+          <div class="profile-info-row">
+            <span class="profile-info-label">Membre depuis</span>
+            <span class="profile-info-val" id="profile-info-since">—</span>
+          </div>
+          <div class="profile-info-row" style="border-bottom:none">
+            <span class="profile-info-label">Statut</span>
+            <span class="profile-info-val" id="profile-info-status">—</span>
+          </div>
+        </div>
+
+        <div style="padding:0 16px">
+          <button class="btn-logout" id="btn-logout">Se déconnecter</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         WIMBLEDON SCREEN
+    ════════════════════════════════ -->
+    <div class="screen hidden" id="screen-wimbledon">
+
+      <header class="home-topbar">
+        <button class="icon-btn" id="wimbledon-back" aria-label="Retour">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+        <span class="logo">Wimbledon 2026</span>
+        <div style="width:36px"></div>
+      </header>
+
+      <div class="home-scroll" id="wimbledon-scroll" style="padding:12px 16px 90px">
+
+        <div class="comp-hero comp-hero--tennis">
+          <div class="comp-hero-overlay">
+            <span class="comp-hero-league">GRAND CHELEM · GAZON</span>
+            <h2 class="comp-hero-title">Wimbledon<br>2026</h2>
+          </div>
+        </div>
+
+        <div id="wimbledon-matches-list"></div>
+
+      </div>
+
+      <nav class="bottom-nav">
+        <button class="nav-item" data-nav="matchs"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Matchs</span></button>
+        <button class="nav-item active" data-nav="competitions"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Compétitions</span></button>
+        <button class="nav-item" data-nav="groupes"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Groupes</span></button>
+        <button class="nav-item" data-nav="social"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Social</span></button>
+      </nav>
+
+    </div>
+
+  </div><!-- end phone-frame -->
+
+  <!-- ════════════════════════════════
+       CREATE GROUP MODAL (bottom sheet)
+  ════════════════════════════════ -->
+  <div class="modal-overlay hidden" id="modal-create-group">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <h2 class="modal-title">Créer un groupe</h2>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+
+      <!-- Step 1 : nom -->
+      <div class="create-step" id="step-name">
+        <label class="create-label">Nom du groupe</label>
+        <input class="create-input" id="group-name-input" type="text" placeholder="Ex : Les Pronostiqueurs" maxlength="30" />
+
+        <label class="create-label" style="margin-top:20px">Compétition</label>
+        <div class="comp-picker" id="comp-picker">
+          <button class="comp-pick-item active" data-comp="Coupe du Monde FIFA 2026">
+            <span style="font-size:28px;line-height:1">🏆</span>
+            <span>Mondial 2026</span>
+          </button>
+          <button class="comp-pick-item" data-comp="Wimbledon 2026">
+            <span style="font-size:28px;line-height:1">🎾</span>
+            <span>Wimbledon</span>
+          </button>
+        </div>
+
+        <label class="create-label" style="margin-top:20px">Inviter des amis</label>
+        <!-- Rempli dynamiquement depuis currentUser.friends -->
+        <div class="friend-picker" id="friend-picker"></div>
+
+        <button class="btn-primary" id="btn-confirm-group" style="margin-top:24px">Créer le groupe</button>
+      </div>
+
+      <!-- Confirmation -->
+      <div class="create-step hidden" id="step-confirm">
+        <div class="confirm-icon">🎉</div>
+        <h3 class="confirm-title">Groupe créé !</h3>
+        <p class="confirm-sub" id="confirm-sub"></p>
+        <button class="btn-primary" id="btn-confirm-ok" style="margin-top:24px">Voir mon groupe</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       INVITE TO GROUP MODAL
+  ════════════════════════════════ -->
+  <div class="modal-overlay hidden" id="modal-invite-group">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <h3 class="modal-title" style="margin:0">Inviter <span id="invite-friend-name"></span></h3>
+        <button class="icon-btn" id="modal-invite-close">✕</button>
+      </div>
+      <p style="font-size:13px;color:#888;margin:0 0 16px">Choisissez un groupe :</p>
+      <div id="invite-groups-list">
+        <p style="color:#aaa;font-size:14px;text-align:center;padding:20px 0">Aucun groupe — créez-en un d'abord.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK (compat – pas besoin de module ES) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <!-- Config Firestore (remplir firebase-config.js) -->
+  <script src="firebase-config.js"></script>
+  <script src="app.js?v=57"></script>
+</body>
+</html>
