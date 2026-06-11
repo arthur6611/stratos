@@ -91,6 +91,30 @@ body {
 .view { display: none; }
 .view.active { display: block; }
 
+/* ── ONGLETS MATCHS ── */
+.match-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.match-tab {
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.match-tab:hover { background: var(--bg); color: var(--text); }
+.match-tab.active {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+
 /* ── TOPBAR ── */
 .topbar {
   display: flex;
@@ -250,6 +274,84 @@ tbody td {
   color: var(--muted);
   margin-bottom: 24px;
 }
+
+/* Tennis sets */
+.hidden { display: none !important; }
+
+.sets-names-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+.set-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.set-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  min-width: 42px;
+}
+.set-score-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+.set-val {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--blue-dk);
+  min-width: 28px;
+  text-align: center;
+}
+.set-vs {
+  font-size: 18px;
+  color: var(--muted);
+  font-weight: 300;
+}
+.btn-remove-set {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 14px;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .15s, color .15s;
+}
+.btn-remove-set:hover { background: #fee2e2; color: var(--red); }
+
+.btn-add-set {
+  width: 100%;
+  background: var(--bg);
+  border: 1.5px dashed var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue);
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: background .15s, border-color .15s;
+}
+.btn-add-set:hover { background: #eef0ff; border-color: var(--blue); }
 
 /* Score saisie */
 .score-row {

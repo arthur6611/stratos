@@ -31,7 +31,11 @@
       "Bash(curl -sL \"https://www.euroleaguebasketball.net/img/euroleague/logo.svg\" -o euroleague.svg)",
       "WebFetch(domain:www.euroleaguebasketball.net)",
       "Bash(grep -n \"currentUser\\\\.\\\\|users/\\\\`\\\\|users/\\\\${\" /Users/arthur/Documents/stratos/app.js)",
-      "Bash(grep -n \"users/\\\\`\\\\${currentUser\\\\.pseudo}\\\\`\\\\|users/\\\\${currentUser\\\\.pseudo}\" /Users/arthur/Documents/stratos/app.js)"
+      "Bash(grep -n \"users/\\\\`\\\\${currentUser\\\\.pseudo}\\\\`\\\\|users/\\\\${currentUser\\\\.pseudo}\" /Users/arthur/Documents/stratos/app.js)",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(node --input-type=module)",
+      "Bash(node -e ' *)"
     ]
   }
 }

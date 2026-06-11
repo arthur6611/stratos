@@ -661,8 +661,11 @@ function buildWimbledonMatches() {
   const all = [];
   for (const round of wimbledonRounds) {
     for (const m of round.matches) {
-      const startMs = new Date(`${round.date}T${m.time}:00`).getTime();
-      all.push({ ...m, round: round.round, dateIso: round.date, label: round.label, startMs, sport: 'tennis' });
+      const timePart = m.time || '';
+      const startMs  = timePart ? new Date(`${round.date}T${timePart}:00`).getTime() : 0;
+      const isUnknown = n => n.ab === 'TBD' || /^qualifi[ée]e?\s*\d/i.test(n.name);
+      const isTBD    = isUnknown(m.t1) || isUnknown(m.t2);
+      all.push({ ...m, round: round.round, dateIso: round.date, label: round.label, timePart, startMs, sport: 'tennis', tbd: isTBD });
     }
   }
   return all;
@@ -673,33 +676,46 @@ async function renderWimbledonScreen() {
   if (!container) return;
   await loadPredictionsData();
 
-  const byRound = wimbledonRounds.map(r => ({
-    label: r.label,
-    matches: r.matches.map(m => ({
-      ...m,
-      round: r.round,
-      dateIso: r.date,
-      startMs: new Date(`${r.date}T${m.time}:00`).getTime(),
-      sport: 'tennis',
-    }))
-  }));
+  // Utilise buildWimbledonMatches() pour avoir timePart et tbd correctement définis
+  const allMatches = buildWimbledonMatches();
 
-  container.innerHTML = byRound.map(r => `
-    <div class="cal-day-label">${r.label}</div>
-    ${r.matches.map(m => `
-      <div class="match-card" data-mid="${m.mid}">
-        <div class="match-meta">
-          <span class="match-time">${m.time}</span>
-          <span class="match-badge-tennis">${m.round}</span>
-        </div>
-        <div class="match-teams">
-          <div class="match-team">${teamAvatarHtml(m.t1.name, null, m.t1.ab)}<span>${m.t1.name}</span></div>
-          ${buildScoreSep(m.mid)}
-          <div class="match-team match-team--right">${teamAvatarHtml(m.t2.name, null, m.t2.ab)}<span>${m.t2.name}</span></div>
-        </div>
-        ${buildPredBar(m)}
-      </div>`).join('')}
-  `).join('');
+  // Regrouper par label de round (dans l'ordre original)
+  const roundOrder = [];
+  const byRoundLabel = {};
+  for (const m of allMatches) {
+    if (!byRoundLabel[m.label]) {
+      roundOrder.push(m.label);
+      byRoundLabel[m.label] = [];
+    }
+    byRoundLabel[m.label].push(m);
+  }
+
+  container.innerHTML = roundOrder.map(label => {
+    const matches = byRoundLabel[label];
+    return `
+      <div class="cal-day-label">${label}</div>
+      ${matches.map(m => {
+        const timeHtml = m.timePart ? `<span class="match-time">${m.timePart}</span>` : '';
+        const unknownPlayer = n => n.ab === 'TBD' || /^qualifi[ée]e?\s*\d/i.test(n.name);
+        const t1Name   = unknownPlayer(m.t1) ? '?' : m.t1.name;
+        const t2Name   = unknownPlayer(m.t2) ? '?' : m.t2.name;
+        const t1Ab     = unknownPlayer(m.t1) ? '?' : m.t1.ab;
+        const t2Ab     = unknownPlayer(m.t2) ? '?' : m.t2.ab;
+        return `
+        <div class="match-card" data-mid="${m.mid}">
+          <div class="match-meta">
+            ${timeHtml}
+            <span class="match-badge-tennis">${m.round}</span>
+          </div>
+          <div class="match-teams">
+            <div class="match-team">${teamAvatarHtml(t1Name, null, t1Ab)}<span>${t1Name}</span></div>
+            ${buildScoreSep(m.mid)}
+            <div class="match-team match-team--right">${teamAvatarHtml(t2Name, null, t2Ab)}<span>${t2Name}</span></div>
+          </div>
+          ${buildPredBar(m)}
+        </div>`;
+      }).join('')}`;
+  }).join('');
 
   attachPredictionClicks(container);
 }
@@ -1459,6 +1475,11 @@ const _matchByBadge = {};
  * Appelé aussi bien pour le rendu initial que pour les mises à jour.
  */
 function buildPredBarInner(m) {
+  // Match avec joueurs inconnus → paris indisponibles
+  if (m.tbd) {
+    return `<span class="pred-tbd">🔒 Joueurs non encore qualifiés — paris indisponibles</span>`;
+  }
+
   const now        = Date.now();
   const elapsed    = now - m.startMs;          // ms depuis le coup d'envoi
   const isStarted  = elapsed >= 0;
@@ -1518,7 +1539,7 @@ function refreshScoresInDOM() {
     if (!sep) return;
     const score = matchScores[mid];
     if (score != null) {
-      sep.outerHTML = `<span class="match-score">${score.t1}<span class="match-score-sep">–</span>${score.t2}</span>`;
+      sep.outerHTML = buildScoreSep(mid);
     }
     // Mettre à jour la pred-bar si besoin
     const bar = card.querySelector('[id^="pw-"]');
@@ -1550,6 +1571,13 @@ function refreshScoresInDOM() {
 function buildScoreSep(mid) {
   const score = matchScores[mid];
   if (score != null) {
+    const m = _matchByBadge[mid];
+    if (m?.sport === 'tennis' && score.sets?.length) {
+      const setsHtml = score.sets
+        .map(s => `<span class="tennis-set">${s.t1}<span class="match-score-sep">-</span>${s.t2}</span>`)
+        .join('');
+      return `<span class="match-score match-score--tennis">${setsHtml}</span>`;
+    }
     return `<span class="match-score">${score.t1}<span class="match-score-sep">–</span>${score.t2}</span>`;
   }
   return `<span class="match-vs">–</span>`;
@@ -1625,14 +1653,18 @@ function renderMatchsScreenUI() {
   const container = document.getElementById('matchs-list');
   if (!container) return;
 
-  function flagHtml(team, side) {
+  const isUnknownPlayer = n => n.ab === 'TBD' || /^qualifi[ée]e?\s*\d/i.test(n.name);
+
+  function flagHtml(team, side, forceName) {
+    const name = forceName || team.name;
+    const ab   = forceName ? '?' : team.ab;
     const logo = teamLogos[team.name];
-    const img  = logo
-      ? `<img src="${logo}" alt="${team.ab}" class="match-flag">`
-      : `<div class="team-avatar" style="width:26px;height:26px;font-size:9px;flex-shrink:0">${team.ab}</div>`;
+    const img  = (!forceName && logo)
+      ? `<img src="${logo}" alt="${ab}" class="match-flag">`
+      : `<div class="team-avatar" style="width:26px;height:26px;font-size:9px;flex-shrink:0">${ab}</div>`;
     return side === 'left'
-      ? `<div class="cal-team">${img}<span>${team.name}</span></div>`
-      : `<div class="cal-team cal-team--right"><span>${team.name}</span>${img}</div>`;
+      ? `<div class="cal-team">${img}<span>${name}</span></div>`
+      : `<div class="cal-team cal-team--right"><span>${name}</span>${img}</div>`;
   }
 
   function buildSection(matches) {
@@ -1641,21 +1673,24 @@ function renderMatchsScreenUI() {
     let html = '';
     for (const [dateIso, dayMatches] of Object.entries(byDate)) {
       const dayLabel = matchDateLabels[dateIso] || dateIso;
-      const groups   = [...new Set(dayMatches.map(m => m.group))].map(g => `Gr. ${g}`).join(' · ');
+      const validGroups = [...new Set(dayMatches.map(m => m.group).filter(g => g && !g.startsWith('W-')))];
+      const groupsLabel = validGroups.length ? validGroups.map(g => `Gr. ${g}`).join(' · ') : '';
       html += `
         <div class="matchs-day-sep">
           <span class="matchs-day-name">${dayLabel}</span>
-          <span class="matchs-day-groups">${groups}</span>
+          <span class="matchs-day-groups">${groupsLabel}</span>
         </div>
         <div class="cal-group">`;
       for (const m of dayMatches) {
+        const t1Unknown = isUnknownPlayer(m.t1);
+        const t2Unknown = isUnknownPlayer(m.t2);
         html += `
           <div class="cal-row">
-            <div class="cal-time">${m.timePart}</div>
+            <div class="cal-time">${m.timePart || ''}</div>
             <div class="cal-teams">
-              ${flagHtml(m.t1, 'left')}
+              ${flagHtml(m.t1, 'left',  t1Unknown ? '?' : null)}
               ${buildScoreSep(m.mid)}
-              ${flagHtml(m.t2, 'right')}
+              ${flagHtml(m.t2, 'right', t2Unknown ? '?' : null)}
             </div>
           </div>
           ${buildPredBar(m)}`;

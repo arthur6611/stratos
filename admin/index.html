@@ -39,13 +39,14 @@
             <option value="W-SF">Wimbledon SF</option>
             <option value="W-FIN">Wimbledon Finale</option>
           </select>
-          <select id="filter-status">
-            <option value="">Tous les matchs</option>
-            <option value="pending">Sans résultat</option>
-            <option value="done">Avec résultat</option>
-          </select>
         </div>
       </header>
+
+      <!-- Onglets À venir / Passés -->
+      <div class="match-tabs">
+        <button class="match-tab active" data-tab="upcoming">📅 À venir</button>
+        <button class="match-tab" data-tab="past">✅ Matchs passés</button>
+      </div>
 
       <div class="table-wrap">
         <table id="matches-table">
@@ -98,24 +99,38 @@
       <h2 class="modal-title">Saisir le score</h2>
       <p class="modal-match" id="modal-match"></p>
 
-      <div class="score-row">
-        <div class="score-team">
-          <span class="score-team-name" id="score-t1-name">Équipe 1</span>
-          <div class="score-controls">
-            <button class="score-btn" data-side="t1" data-op="-">−</button>
-            <span class="score-val" id="score-t1">0</span>
-            <button class="score-btn" data-side="t1" data-op="+">+</button>
+      <!-- ── Football : buts ── -->
+      <div id="football-score-ui">
+        <div class="score-row">
+          <div class="score-team">
+            <span class="score-team-name" id="score-t1-name">Équipe 1</span>
+            <div class="score-controls">
+              <button class="score-btn" data-side="t1" data-op="-">−</button>
+              <span class="score-val" id="score-t1">0</span>
+              <button class="score-btn" data-side="t1" data-op="+">+</button>
+            </div>
+          </div>
+          <div class="score-sep">–</div>
+          <div class="score-team">
+            <span class="score-team-name" id="score-t2-name">Équipe 2</span>
+            <div class="score-controls">
+              <button class="score-btn" data-side="t2" data-op="-">−</button>
+              <span class="score-val" id="score-t2">0</span>
+              <button class="score-btn" data-side="t2" data-op="+">+</button>
+            </div>
           </div>
         </div>
-        <div class="score-sep">–</div>
-        <div class="score-team">
-          <span class="score-team-name" id="score-t2-name">Équipe 2</span>
-          <div class="score-controls">
-            <button class="score-btn" data-side="t2" data-op="-">−</button>
-            <span class="score-val" id="score-t2">0</span>
-            <button class="score-btn" data-side="t2" data-op="+">+</button>
-          </div>
+      </div>
+
+      <!-- ── Tennis : sets ── -->
+      <div id="tennis-score-ui" class="hidden">
+        <div class="sets-names-row">
+          <span id="sets-t1-name">Joueur 1</span>
+          <span></span>
+          <span id="sets-t2-name">Joueur 2</span>
         </div>
+        <div id="sets-container"></div>
+        <button class="btn-add-set" id="btn-add-set">+ Ajouter un set</button>
       </div>
 
       <div class="score-result-preview" id="score-result-preview">Résultat : –</div>
@@ -131,6 +146,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
-  <script src="admin.js"></script>
+  <script src="admin.js?v=2"></script>
 </body>
 </html>

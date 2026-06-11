@@ -118,11 +118,14 @@ const ALL_MATCHES = [
 
 // ── État ──
 let db = null;
-let matchResults = {};   // mid → { result, score: {t1, t2} }
+let matchResults = {};   // mid → { result, score }
 let allUsers     = [];
 let currentMatch = null;
+// Football
 let scoreT1 = 0;
 let scoreT2 = 0;
+// Tennis
+let currentSets  = [];   // [{t1: N, t2: N}, ...]
 
 // ── Firebase init ──
 firebase.initializeApp(firebaseConfig);
@@ -140,10 +143,21 @@ document.querySelectorAll('.sidebar-nav .nav-item').forEach(btn => {
   });
 });
 
+// ── Onglet actif (upcoming / past) ──
+let activeTab = 'upcoming';
+
+document.querySelectorAll('.match-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.match-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTab = btn.dataset.tab;
+    renderMatchesTable();
+  });
+});
+
 // ── Filtres ──
 document.getElementById('filter-sport').addEventListener('change', renderMatchesTable);
 document.getElementById('filter-group').addEventListener('change', renderMatchesTable);
-document.getElementById('filter-status').addEventListener('change', renderMatchesTable);
 document.getElementById('user-search').addEventListener('input', renderUsersTable);
 
 // ── Charger les résultats existants puis afficher ──
@@ -162,17 +176,26 @@ async function init() {
 }
 
 function renderMatchesTable() {
-  const sportFilter  = document.getElementById('filter-sport').value;
-  const groupFilter  = document.getElementById('filter-group').value;
-  const statusFilter = document.getElementById('filter-status').value;
+  const sportFilter = document.getElementById('filter-sport').value;
+  const groupFilter = document.getElementById('filter-group').value;
+  const now         = Date.now();
 
   let matches = ALL_MATCHES.filter(m => {
     const sport = m.sport || 'football';
     if (sportFilter && sport !== sportFilter) return false;
     if (groupFilter && m.group !== groupFilter) return false;
-    if (statusFilter === 'pending' && matchResults[m.mid]?.result) return false;
-    if (statusFilter === 'done'    && !matchResults[m.mid]?.result) return false;
+    // Filtre par onglet : à venir = pas de résultat enregistré, passés = résultat enregistré
+    const hasResult = !!matchResults[m.mid]?.result;
+    if (activeTab === 'upcoming' && hasResult)  return false;
+    if (activeTab === 'past'     && !hasResult) return false;
     return true;
+  });
+
+  // Tri par date + heure croissant (passés : décroissant pour voir les plus récents en premier)
+  matches.sort((a, b) => {
+    const ta = new Date(`${a.date}T${a.time}`).getTime();
+    const tb = new Date(`${b.date}T${b.time}`).getTime();
+    return activeTab === 'past' ? tb - ta : ta - tb;
   });
 
   const tbody = document.getElementById('matches-tbody');
@@ -216,9 +239,19 @@ function renderMatchesTable() {
 
 function resBadge(m, data) {
   if (!data?.result) return '<span class="result-badge none">–</span>';
-  const labels = { home: m.t1, draw: 'Match nul', away: m.t2 };
-  const score = data.score ? `<strong>${data.score.t1}–${data.score.t2}</strong> · ` : '';
-  return `<span class="result-badge ${data.result}">${score}${labels[data.result]}</span>`;
+  const isTennis = m.sport === 'tennis';
+  const labels = isTennis
+    ? { home: m.t1, away: m.t2 }
+    : { home: m.t1, draw: 'Match nul', away: m.t2 };
+  let scoreStr = '';
+  if (data.score) {
+    if (isTennis && data.score.sets?.length) {
+      scoreStr = data.score.sets.map(s => `${s.t1}-${s.t2}`).join(' · ') + ' &nbsp;·&nbsp; ';
+    } else if (!isTennis) {
+      scoreStr = `<strong>${data.score.t1}–${data.score.t2}</strong> · `;
+    }
+  }
+  return `<span class="result-badge ${data.result}">${scoreStr}${labels[data.result]}</span>`;
 }
 
 function formatDate(iso) {
@@ -230,49 +263,122 @@ function formatDate(iso) {
 function openModal(mid) {
   currentMatch = ALL_MATCHES.find(m => m.mid === mid);
   const existing = matchResults[mid];
-  scoreT1 = existing?.score?.t1 ?? 0;
-  scoreT2 = existing?.score?.t2 ?? 0;
+  const isTennis = currentMatch.sport === 'tennis';
 
   document.getElementById('modal-match').textContent =
     `${currentMatch.t1} vs ${currentMatch.t2} — ${formatDate(currentMatch.date)} ${currentMatch.time}`;
-  document.getElementById('score-t1-name').textContent = currentMatch.t1;
-  document.getElementById('score-t2-name').textContent = currentMatch.t2;
 
-  updateScoreDisplay();
+  const footballUI = document.getElementById('football-score-ui');
+  const tennisUI   = document.getElementById('tennis-score-ui');
+
+  if (isTennis) {
+    footballUI.classList.add('hidden');
+    tennisUI.classList.remove('hidden');
+    document.getElementById('sets-t1-name').textContent = currentMatch.t1;
+    document.getElementById('sets-t2-name').textContent = currentMatch.t2;
+    // Initialiser les sets depuis les données existantes
+    const existingSets = existing?.score?.sets;
+    currentSets = existingSets?.length
+      ? existingSets.map(s => ({ t1: s.t1, t2: s.t2 }))
+      : [{ t1: 0, t2: 0 }];
+    renderSetsUI();
+  } else {
+    tennisUI.classList.add('hidden');
+    footballUI.classList.remove('hidden');
+    document.getElementById('score-t1-name').textContent = currentMatch.t1;
+    document.getElementById('score-t2-name').textContent = currentMatch.t2;
+    scoreT1 = existing?.score?.t1 ?? 0;
+    scoreT2 = existing?.score?.t2 ?? 0;
+    updateFootballDisplay();
+  }
+
   document.getElementById('modal-overlay').classList.remove('hidden');
 }
 
-function updateScoreDisplay() {
+/* ── Football ── */
+function updateFootballDisplay() {
   document.getElementById('score-t1').textContent = scoreT1;
   document.getElementById('score-t2').textContent = scoreT2;
-
-  const isTennis = currentMatch?.sport === 'tennis';
   let result, label;
-  if (scoreT1 > scoreT2)       { result = 'home'; label = currentMatch.t1; }
-  else if (scoreT2 > scoreT1)  { result = 'away'; label = currentMatch.t2; }
-  else if (!isTennis)          { result = 'draw'; label = 'Match nul'; }
-  else                         { result = null;   label = 'Égalité impossible au tennis'; }
-
+  if      (scoreT1 > scoreT2) { result = 'home'; label = currentMatch.t1; }
+  else if (scoreT2 > scoreT1) { result = 'away'; label = currentMatch.t2; }
+  else                        { result = 'draw'; label = 'Match nul'; }
   const preview = document.getElementById('score-result-preview');
-  const scoreLabel = isTennis
-    ? `Sets : ${scoreT1} – ${scoreT2}`
-    : `Score : ${scoreT1} – ${scoreT2}`;
-  preview.textContent = `${scoreLabel} → ${label}`;
-  preview.dataset.result = result || '';
+  preview.textContent = `Score : ${scoreT1} – ${scoreT2}  →  ${label}`;
+  preview.dataset.result = result;
 }
 
-document.querySelectorAll('.score-btn').forEach(btn => {
+// Boutons +/− du football
+document.querySelectorAll('#football-score-ui .score-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const op = btn.dataset.op;
-    if (btn.dataset.side === 't1') {
-      scoreT1 = Math.max(0, scoreT1 + (op === '+' ? 1 : -1));
-    } else {
-      scoreT2 = Math.max(0, scoreT2 + (op === '+' ? 1 : -1));
-    }
-    updateScoreDisplay();
+    if (btn.dataset.side === 't1') scoreT1 = Math.max(0, scoreT1 + (op === '+' ? 1 : -1));
+    else                           scoreT2 = Math.max(0, scoreT2 + (op === '+' ? 1 : -1));
+    updateFootballDisplay();
   });
 });
 
+/* ── Tennis ── */
+function renderSetsUI() {
+  const container = document.getElementById('sets-container');
+  container.innerHTML = currentSets.map((s, i) => `
+    <div class="set-row">
+      <span class="set-label">Set ${i + 1}</span>
+      <div class="set-score-controls">
+        <button class="score-btn set-btn" data-set="${i}" data-side="t1" data-op="-">−</button>
+        <span class="set-val">${s.t1}</span>
+        <button class="score-btn set-btn" data-set="${i}" data-side="t1" data-op="+">+</button>
+      </div>
+      <span class="set-vs">–</span>
+      <div class="set-score-controls">
+        <button class="score-btn set-btn" data-set="${i}" data-side="t2" data-op="-">−</button>
+        <span class="set-val">${s.t2}</span>
+        <button class="score-btn set-btn" data-set="${i}" data-side="t2" data-op="+">+</button>
+      </div>
+      ${currentSets.length > 1
+        ? `<button class="btn-remove-set" data-idx="${i}" title="Supprimer ce set">✕</button>`
+        : `<span style="width:28px"></span>`}
+    </div>`).join('');
+
+  container.querySelectorAll('.set-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx  = +btn.dataset.set;
+      const side = btn.dataset.side;
+      const op   = btn.dataset.op;
+      currentSets[idx][side] = Math.max(0, currentSets[idx][side] + (op === '+' ? 1 : -1));
+      renderSetsUI();
+    });
+  });
+  container.querySelectorAll('.btn-remove-set').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentSets.splice(+btn.dataset.idx, 1);
+      renderSetsUI();
+    });
+  });
+
+  updateTennisPreview();
+}
+
+function updateTennisPreview() {
+  const setsWonT1 = currentSets.filter(s => s.t1 > s.t2).length;
+  const setsWonT2 = currentSets.filter(s => s.t2 > s.t1).length;
+  const setsStr   = currentSets.map(s => `${s.t1}-${s.t2}`).join(' · ');
+  let result, label;
+  if      (setsWonT1 > setsWonT2) { result = 'home'; label = currentMatch.t1; }
+  else if (setsWonT2 > setsWonT1) { result = 'away'; label = currentMatch.t2; }
+  else                            { result = '';     label = 'En cours / à compléter'; }
+  const preview = document.getElementById('score-result-preview');
+  preview.textContent = `${setsStr}  →  ${label}`;
+  preview.dataset.result = result;
+}
+
+document.getElementById('btn-add-set').addEventListener('click', () => {
+  if (currentSets.length >= 5) return; // max 5 sets
+  currentSets.push({ t1: 0, t2: 0 });
+  renderSetsUI();
+});
+
+/* ── Communs ── */
 document.getElementById('modal-cancel').addEventListener('click', closeModal);
 document.getElementById('modal-overlay').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeModal();
@@ -285,13 +391,26 @@ function closeModal() {
 
 document.getElementById('modal-save').addEventListener('click', async () => {
   if (!currentMatch) return;
-  const btn = document.getElementById('modal-save');
-  btn.disabled = true;
-  btn.textContent = 'Enregistrement…';
+  const saveBtn = document.getElementById('modal-save');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Enregistrement…';
 
   const result = document.getElementById('score-result-preview').dataset.result;
-  if (!result) { toast('⚠️ Score invalide (égalité impossible)', 'error'); btn.disabled = false; btn.textContent = 'Enregistrer'; return; }
-  const score  = { t1: scoreT1, t2: scoreT2 };
+  if (!result) {
+    toast('⚠️ Score invalide ou incomplet', 'error');
+    saveBtn.disabled = false; saveBtn.textContent = 'Enregistrer';
+    return;
+  }
+
+  const isTennis = currentMatch.sport === 'tennis';
+  let score;
+  if (isTennis) {
+    const setsWonT1 = currentSets.filter(s => s.t1 > s.t2).length;
+    const setsWonT2 = currentSets.filter(s => s.t2 > s.t1).length;
+    score = { sets: currentSets.map(s => ({ t1: s.t1, t2: s.t2 })), t1: setsWonT1, t2: setsWonT2 };
+  } else {
+    score = { t1: scoreT1, t2: scoreT2 };
+  }
 
   try {
     await db.doc(`matchResults/${currentMatch.mid}`).set({ result, score });
@@ -303,8 +422,8 @@ document.getElementById('modal-save').addEventListener('click', async () => {
     toast('❌ Erreur : ' + e.message, 'error');
   }
 
-  btn.disabled = false;
-  btn.textContent = 'Enregistrer';
+  saveBtn.disabled = false;
+  saveBtn.textContent = 'Enregistrer';
 });
 
 async function deleteResult(mid) {
